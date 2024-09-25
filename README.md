@@ -91,9 +91,12 @@ rm -rf $TEMP_DIR
 ### 4️⃣ 스캔 결과 저장
 - Trivy 스캔의 출력 결과를 `result` 변수에 저장합니다.
 ![image (10)](https://github.com/user-attachments/assets/6a9523f7-3de1-4c93-bf32-36a67d034cd1)
+<br>
+<br>
 
 - 비밀정보가 발견되었는지 `SecretDetect`로 어떤 정보가 노출되었는지를 확인합니다.
 ![image (10)](https://github.com/user-attachments/assets/29f77d4c-845d-4d59-9461-e0acb938d36a)
+
 
 <br>
 
@@ -104,8 +107,12 @@ rm -rf $TEMP_DIR
 
 
 <br>
-<p align="left"><img src="https://github.com/user-attachments/assets/101ab839-4619-41ef-8f45-79969b010dc1"></p>
+
+![image](https://github.com/user-attachments/assets/c2080700-b31c-40a3-b45f-22f5477c5f94)
+
+
 - 발견된 비밀정보에 대한 상세 내용을 포함하여 **팀원들에게 신속하게 알림**을 보냅니다.
+  
 <br>
 
 ### 6️⃣ crontab 편집 및 cron job 추가
