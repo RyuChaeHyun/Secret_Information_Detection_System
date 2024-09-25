@@ -68,7 +68,7 @@ sudo apt-get install trivy
 ### 3️⃣ 스캔 스크립트 실행
 - 수신한 URL을 인자로 사용하여 `scan.sh` 스크립트를 실행합니다.
 - 스크립트 내에서는 Trivy를 사용하여 리포지토리에서 비밀정보를 스캔합니다.
-- 
+
 ```
 #!/bin/bash
 
@@ -92,12 +92,17 @@ rm -rf $TEMP_DIR
 - Trivy 스캔의 출력 결과를 `result` 변수에 저장합니다.
 - 이 결과는 비밀정보가 발견되었는지, 어떤 정보가 노출되었는지를 포함합니다.
 
-###  Slack 알림 전송
+<br>
+
+### 5️⃣ Slack 알림 전송
+<p align="left"><img src="https://github.com/user-attachments/assets/df30ea37-3231-4079-a239-583de0cd51dd"></p>
 - 스캔 결과를 기반으로 Slack으로 알림을 전송합니다.
 - 발견된 비밀정보에 대한 상세 내용을 포함하여 팀원들에게 신속하게 알림을 보냅니다.
 <br>
+<p align="left"><img src="https://github.com/user-attachments/assets/101ab839-4619-41ef-8f45-79969b010dc1"></p>
+<br>
 
-### crontab 편집 및 cron job 추가
+### 6️⃣ crontab 편집 및 cron job 추가
 
 ```
 crontab -e
