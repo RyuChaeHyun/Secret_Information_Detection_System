@@ -1,4 +1,4 @@
-# :space_invader: 중요정보 노출 방지를 위한 자동화 시스템
+# :space_invader: 비밀번호 및 API 키 노출 방지를 위한 자동화 시스템
 "GitHub 중요정보 노출을 Trivy로 자정마다 스캔하고 Slack으로 즉시 알림을 보내는 자동화 시스템"
 
 
