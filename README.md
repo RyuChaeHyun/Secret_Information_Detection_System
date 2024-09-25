@@ -99,7 +99,8 @@ rm -rf $TEMP_DIR
 
 ### 5️⃣ Slack 알림 전송
 <p align="left"><img src="https://github.com/user-attachments/assets/df30ea37-3231-4079-a239-583de0cd51dd"></p>
-- 스캔 결과를 기반으로** Slack으로 알림을 전송**합니다. <br>
+
+- 스캔 결과를 기반으로 **Slack으로 알림을 전송** 합니다. <br>
 
 
 <br>
