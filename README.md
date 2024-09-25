@@ -58,15 +58,55 @@ sudo apt-get install trivy
 ```
 <br>
 
-### 2️⃣ 
+### 2️⃣ URL 요청 수신
+- Spring Boot 애플리케이션에서 HTTP GET 요청을 통해 비밀정보 스캔을 위한 GitHub 리포지토리 URL을 수신합니다.
+- `http://localhost:8081/api/scan?repoUrl=https%3A%2F%2Fgithub.com%2FSeokCheol-Lee%2FWebToonProject.git"`
+
 
 <br>
 
-### 3️⃣ 
+### 3️⃣ 스캔 스크립트 실행
+- 수신한 URL을 인자로 사용하여 `scan.sh` 스크립트를 실행합니다.
+- 스크립트 내에서는 Trivy를 사용하여 리포지토리에서 비밀정보를 스캔합니다.
+- 
+```
+#!/bin/bash
+
+# Git 리포지토리 URL
+REPO_URL=$1
+TEMP_DIR=$(mktemp -d)
+
+# Git 리포지토리 클론
+git clone $REPO_URL $TEMP_DIR
+
+# Trivy로 비밀 정보 스캔
+docker run --rm -v $TEMP_DIR:/repo aquasec/trivy fs --scanners secret /repo
+
+# 클론한 디렉토리 삭제
+rm -rf $TEMP_DIR
+```
 
 <br>
 
-### 4️⃣ 
+### 4️⃣ 스캔 결과 저장
+- Trivy 스캔의 출력 결과를 `result` 변수에 저장합니다.
+- 이 결과는 비밀정보가 발견되었는지, 어떤 정보가 노출되었는지를 포함합니다.
+
+###  Slack 알림 전송
+- 스캔 결과를 기반으로 Slack으로 알림을 전송합니다.
+- 발견된 비밀정보에 대한 상세 내용을 포함하여 팀원들에게 신속하게 알림을 보냅니다.
+<br>
+
+### crontab 편집 및 cron job 추가
+
+```
+crontab -e
+
+26 16 * * * /usr/bin/curl -s "http://localhost:8081/api/scan?repoUrl=https%3A%2F%2Fgithub.com%2FSeokCheol-Lee%2FWebToonProject.git -H accept: */* -d" >> /path/to/your/scan.log 2>&1
+```
+
+<br>
+
 
 ## ⚙️ 대응방안
 <br>
@@ -83,15 +123,5 @@ Trivy와 crontab을 이용한 비밀정보 탐지 및 슬랙 알림 자동화 �
 
 ## 🤔 아쉬웠던 점
 
-- **알림 과부하**:
-    - 주기적으로 수행되는 스캔으로 인해 발생하는 많은 알림이 팀원들에게 부담이 될 수 있습니다. 중요하지 않은 경고가 자주 발생하면, 실제로 중요한 알림이 묻히는 문제가 발생할 수 있습니다.
-- **실시간 대응 부족**:
-    - crontab을 통해 주기적으로 스캔하는 방식은 실시간 대응이 어렵습니다. 비밀정보가 코드에 추가될 경우, 즉각적인 탐지가 이루어지지 않으므로 보안 위험이 증가할 수 있습니다.
-- **스캔 한계**:
-    - Trivy는 주로 컨테이너 이미지에 대해 스캔을 수행하므로, 다른 환경(예: 파일 시스템, 데이터베이스 등)에서 비밀정보를 탐지하는 데 한계가 있습니다.
-- **위험 증가**:
-   - 새로운 코드가 커밋되거나 배포될 때마다 자동으로 스캔을 실행하지 않으면, 보안 취약점이나 비밀정보가 포함된 채로 배포될 가능성이 높아집니다. 이는 시스템의 보안 위험을 증가시키고, 잠재적인 데이터 유출 사건을 초래할 수 있습니다.
-- **효율성 저하**:
-   - CI/CD 파이프라인의 이벤트 기반 스캐닝을 활용하지 않으면, 전체 개발 및 배포 과정에서 보안이 통합되지 않아 효율성이 저하됩니다. 수동으로 스캔을 진행해야 하는 추가적인 작업이 발생할 수 있으며, 이로 인해 개발팀의 생산성이 감소할 수 있습니다.
 
 <br>
